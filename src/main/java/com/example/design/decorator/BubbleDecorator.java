@@ -1,4 +1,4 @@
-package com.example.decorator;
+package com.example.design.decorator;
 
 public class BubbleDecorator extends BaseDrinkDecorator {
     public BubbleDecorator(BaseDrink drink) {

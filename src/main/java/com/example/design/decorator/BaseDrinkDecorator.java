@@ -1,4 +1,4 @@
-package com.example.decorator;
+package com.example.design.decorator;
 
 public abstract class BaseDrinkDecorator extends BaseDrink {
     protected BaseDrink drink;
