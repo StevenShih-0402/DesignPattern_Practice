@@ -1,0 +1,158 @@
+>就以目前學到的設計來說，感覺這些設計模式的大原則，都是"要建立新功能時就新增程式碼，而不需要修改以前寫過的東西"。
+
+# 裝飾器 (Decorator)
+
+這個系統包含以下幾個部分：
+- BaseDrink：飲料基類，定義了基本接口
+- BlackTea：紅茶飲料
+- GreenTea：綠茶飲料
+  
+- BaseDrinkDecorator：裝飾器基類，用於添加配料
+- BubbleDecorator：珍珠配料裝飾器
+- CoconutDecorator：椰果配料裝飾器
+- IceCreamDecorator：冰淇淋配料裝飾器
+
+![image](https://github.com/user-attachments/assets/0041ca21-5fe2-45bd-9057-21bb88043edc)
+
+系統的主要特點：
+1. 可以動態地為飲料添加配料
+2. 配料可以自由組合
+3. 每個配料都會影響最終價格
+4. 保持了開閉原則 (OCP)，可以輕鬆添加新的配料
+
+---
+
+# 工廠模式 (Factory Pattern) 實作說明
+
+本專案展示了三種不同的工廠模式實作：簡單工廠、工廠方法和抽象工廠。這些模式都基於卡片遊戲的場景，用於創建不同類型的卡片。
+
+## 1. 簡單工廠模式 (Simple Factory)
+
+簡單工廠模式是最基本的工廠模式，它提供一個靜態方法來創建不同類型的物件。
+
+### 主要特點：
+- 使用單一工廠類別來創建所有類型的物件
+- 通過參數來決定要創建的物件類型
+- 適合物件創建邏輯相對簡單的場景
+
+### 實作範例：
+```java
+public class SimpleCardFactory {
+    public static BaseCard printCard(String type) {
+        return switch (type) {
+            case "Minion" -> new MinionCard();
+            case "Magic" -> new MagicCard();
+            default -> null;
+        };
+    }
+}
+```
+
+## 2. 工廠方法模式 (Factory Method)
+
+工廠方法模式定義了一個創建物件的介面，但讓子類別決定要實例化哪個類別。
+
+### 主要特點：
+- 每個具體產品都有對應的具體工廠
+- 符合開閉原則，新增產品時只需新增對應的工廠類別
+- 更好的擴展性和維護性
+
+### 實作範例：
+```java
+public interface InterfaceFactory {
+    BaseCard printCard();
+}
+
+public class MagicFactory implements InterfaceFactory {
+    @Override
+    public BaseCard printCard() {
+        return new MagicCard();
+    }
+}
+
+public class MinionFactory implements InterfaceFactory {
+    @Override
+    public BaseCard printCard() {
+        return new MinionCard();
+    }
+}
+```
+
+## 3. 抽象工廠模式 (Abstract Factory)
+
+抽象工廠模式提供一個介面，用於創建相關或依賴物件的家族，而不需要明確指定具體類別。
+
+### 主要特點：
+- 可以創建多個相關的產品家族
+- 確保產品之間的相容性
+- 適合需要創建一系列相關產品的場景
+
+### 實作範例：
+```java
+public interface CardFactory {
+    CardName createName();
+    CardAttribute createAttribute();
+    CardCost createCost();
+    CardEffect createEffect();
+}
+
+public class MagicCardFactory implements CardFactory {
+    @Override
+    public CardName createName() {
+        return new MagicName();
+    }
+    
+    @Override
+    public CardAttribute createAttribute() {
+        return new MagicAttribute();
+    }
+    
+    @Override
+    public CardCost createCost() {
+        return new MagicCost();
+    }
+    
+    @Override
+    public CardEffect createEffect() {
+        return new MagicEffect();
+    }
+}
+```
+
+## 使用場景比較
+
+1. **簡單工廠**：
+   - 適合產品種類較少且相對固定的場景
+   - 創建邏輯簡單，不需要擴展
+
+2. **工廠方法**：
+   - 適合需要靈活擴展產品種類的場景
+   - 每個產品都有獨特的創建邏輯
+
+3. **抽象工廠**：
+   - 適合需要創建一系列相關產品的場景
+   - 確保產品之間的相容性
+   - 產品家族需要一起更換的場景
+
+## 設計原則
+
+- **單一職責原則**：每個工廠類別只負責創建一種類型的產品
+- **開閉原則**：新增產品時不需要修改現有代碼
+- **依賴倒置原則**：依賴於抽象而不是具體實現
+- **介面隔離原則**：每個介面都應該有明確的職責
+
+## 優缺點分析
+
+### 優點：
+- 封裝了物件的創建過程
+- 提高了代碼的可維護性和可擴展性
+- 降低了系統的耦合度
+
+### 缺點：
+- 增加了系統的複雜度
+- 需要額外的類別
+- 可能導致類別爆炸
+
+## 總結
+
+工廠模式是物件導向設計中最常用的設計模式之一，它能夠有效地解決物件創建的問題。根據不同的使用場景，選擇合適的工廠模式可以讓代碼更加靈活和可維護。
