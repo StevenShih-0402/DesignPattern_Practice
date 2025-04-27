@@ -35,19 +35,6 @@
 - 通過參數來決定要創建的物件類型
 - 適合物件創建邏輯相對簡單的場景
 
-### 實作範例：
-```java
-public class SimpleCardFactory {
-    public static BaseCard printCard(String type) {
-        return switch (type) {
-            case "Minion" -> new MinionCard();
-            case "Magic" -> new MagicCard();
-            default -> null;
-        };
-    }
-}
-```
-
 ## 2. 工廠方法模式 (Factory Method)
 
 工廠方法模式定義了一個創建物件的介面，但讓子類別決定要實例化哪個類別。
@@ -57,27 +44,6 @@ public class SimpleCardFactory {
 - 符合開閉原則，新增產品時只需新增對應的工廠類別
 - 更好的擴展性和維護性
 
-### 實作範例：
-```java
-public interface InterfaceFactory {
-    BaseCard printCard();
-}
-
-public class MagicFactory implements InterfaceFactory {
-    @Override
-    public BaseCard printCard() {
-        return new MagicCard();
-    }
-}
-
-public class MinionFactory implements InterfaceFactory {
-    @Override
-    public BaseCard printCard() {
-        return new MinionCard();
-    }
-}
-```
-
 ## 3. 抽象工廠模式 (Abstract Factory)
 
 抽象工廠模式提供一個介面，用於創建相關或依賴物件的家族，而不需要明確指定具體類別。
@@ -86,38 +52,6 @@ public class MinionFactory implements InterfaceFactory {
 - 可以創建多個相關的產品家族
 - 確保產品之間的相容性
 - 適合需要創建一系列相關產品的場景
-
-### 實作範例：
-```java
-public interface CardFactory {
-    CardName createName();
-    CardAttribute createAttribute();
-    CardCost createCost();
-    CardEffect createEffect();
-}
-
-public class MagicCardFactory implements CardFactory {
-    @Override
-    public CardName createName() {
-        return new MagicName();
-    }
-    
-    @Override
-    public CardAttribute createAttribute() {
-        return new MagicAttribute();
-    }
-    
-    @Override
-    public CardCost createCost() {
-        return new MagicCost();
-    }
-    
-    @Override
-    public CardEffect createEffect() {
-        return new MagicEffect();
-    }
-}
-```
 
 ## 使用場景比較
 
